@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
 from config import constants
-from app.providers.auth_provider import get_azure_blueprint, setup_login_routes
+from app.providers.auth_provider import get_auth_blueprint, setup_login_routes
 from flask_login import LoginManager
 
 # app
@@ -22,7 +22,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db, directory="database/migrations")
 
 # azure login
-blueprint = get_azure_blueprint()
+blueprint = get_auth_blueprint()
 app.register_blueprint(blueprint, url_prefix="/login")
 setup_login_routes(app)
 

@@ -4,7 +4,7 @@ from flask_dance.contrib.azure import azure, make_azure_blueprint
 from config import constants
 
 
-def get_azure_blueprint():
+def get_auth_blueprint():
     blueprint = make_azure_blueprint(
         client_id=constants.AZURE_CLIENT_ID,
         client_secret=constants.AZURE_CLIENT_SECRET,
@@ -56,7 +56,7 @@ def find_or_create_user(token):
     u = azure.get("/v1.0/me").json()
     user_id = u["id"]
 
-    blueprint = get_azure_blueprint()
+    blueprint = get_auth_blueprint()
     query = OAuth.query.filter_by(provider=blueprint.name, provider_user_id=user_id)
     try:
         oauth = query.one()
