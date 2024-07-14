@@ -1,4 +1,4 @@
-# Dash Template
+# Plotly Dash Template
 This is a template for a dash app with postgres database. It borrows some ideas from other web frameworks, including migration patterns, service providers, directory structure, auth, styling and more to make it easier to get started with dash as a multi page web app. Over the coming weeks/months this template will be updated with more features and improvements in order to make it as modular and flexible to use as possible.
 
 ### Setup
