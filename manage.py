@@ -1,49 +1,39 @@
 #!/usr/bin/env python3
 
 import argparse
-import subprocess
-from datetime import datetime
-from database.connections import db
-from sqlalchemy import text
+import os
+from invoke import Context
 
-def make_migration(message):
-    """Create a new migration with a timestamp-based name."""
-    if not message:
-        raise ValueError("Migration message cannot be empty")
+def load_commands(parser):
+    commands = {}
+    command_dir = os.path.join(os.path.dirname(__file__), "app", "commands")
+    for file in os.listdir(command_dir):
+        if file.endswith('.py') and file != '__init__.py':
+            module_name = file[:-3]
+            module = __import__(f'app.commands.{module_name}', fromlist=['run'])
+            for attr_name in dir(module):
+                attr = getattr(module, attr_name)
+                if callable(attr) and "__" in attr_name:
+                    cmd_name = attr_name.replace("__", ":")
+                    func_parser = parser.add_parser(cmd_name, help=attr.__doc__)
+                    if hasattr(attr, 'args'):
+                        for arg_name, arg_opts in attr.args:
+                            func_parser.add_argument(arg_name, **arg_opts)
+                    func_parser.set_defaults(func=attr)
 
-    revision_id = datetime.now().strftime("%Y%m%d%H%M%S")
-    subprocess.run(["flask", "db", "revision", "-m", message, "--rev-id", revision_id])
-
-def migrate_fresh():
-    """Drop all tables and recreate the database."""
-    engine = db.get_engine()
-    db_name = engine.url.database
-
-    with engine.connect() as conn:
-        conn.execute(text("COMMIT"))
-        conn.execute(text(f"DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO public;"))
-
-    subprocess.run(["flask", "db", "upgrade"])
-
+    return commands
+            
 
 def main():
     parser = argparse.ArgumentParser(description="Manage Flask application commands")
     subparsers = parser.add_subparsers(help='sub-command help', dest='command')
-    
-    # Adding a subparser for the migration command
-    parser_migration = subparsers.add_parser('make_migration', help='Create a new database migration')
-    parser_migration.add_argument('message', type=str, help='Migration description')
+    load_commands(subparsers)
 
-    # Adding a subparser for the migrate_fresh command
-    subparsers.add_parser('migrate_fresh', help='Drop all tables and recreate the database')
-
-    # Parse the arguments
     args = parser.parse_args()
-
-    if args.command == 'make_migration':
-        make_migration(args.message)
-    elif args.command == 'migrate_fresh':
-        migrate_fresh()
+    if hasattr(args, 'func'):
+        ctx = Context()
+        func_args = {k: v for k, v in vars(args).items() if k not in ['func', 'command']}
+        args.func(ctx, **func_args)
     else:
         parser.print_help()
 

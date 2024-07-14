@@ -8,7 +8,7 @@ This is a template for a dash app with postgres database. It borrows some ideas 
 - Install the requirements: `pip install -r requirements.txt`
 - Copy the `.env.example` file to `.env` and fill in the necessary details
 - Ensure you have a postgres database running and migrate the database
-- Set up the npm packages for tailwind: `npm install` and `npm run build`
+- Set up the npm packages for tailwind: `npm install` and `npm run build` or `npm run watch`
 - Run the application: `python app.py`
 
 ### Migrations
@@ -18,7 +18,7 @@ This is a template for a dash app with postgres database. It borrows some ideas 
 
 ### Styling
 - Tailwind is used for styling. To set up for compiling css run `npm install` in the root directory
-- To compile css run `npm run build` in the root directory
+- To compile css run `npm run build` or `npm run watch` in the root directory
 
 ### Auth
 - Auth is handled in the `auth_provider.py` file. This is where you can add your own auth logic
