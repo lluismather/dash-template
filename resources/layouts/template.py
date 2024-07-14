@@ -1,5 +1,6 @@
 import dash
 from dash import dcc, html
+import datetime
 
 footer = html.Div(
     [
@@ -7,12 +8,16 @@ footer = html.Div(
             [
                 html.Div(
                     [
-                        html.P(
-                            "Built by the Labour Party",
+                        html.A(
+                            "{} template by Mather Group Limited".format(
+                                str(datetime.datetime.now().year)
+                            ),
+                            href="https://mathergroup.io",
+                            target="_blank",
                             className="text-sm text-white",
                         ),
                         html.P(
-                            "Powered by Dash",
+                            "",
                             className="text-sm text-white",
                         ),
                     ],
@@ -22,7 +27,7 @@ footer = html.Div(
             className="w-full flex flex-col sm:flex-row sm:justify-between sm:items-center",
         ),
     ],
-    className="bg-black p-4 mt-auto",
+    className="bg-gray-800 p-8 mt-auto",
 )
 
 
@@ -33,9 +38,13 @@ def layout():
             [
                 html.A(
                     [
-                        html.Img(
-                            src=dash.get_asset_url("dash-white.svg"),
-                            className="w-full h-auto sm:h-10 sm:w-auto",
+                        # html.Img(
+                        #     src=dash.get_asset_url("dash-white.svg"),
+                        #     className="w-full h-auto sm:h-10 sm:w-auto",
+                        # ),
+                        html.H1(
+                            "Dashboard",
+                            className="text-2xl font-semibold",
                         ),
                     ],
                     href="/",
@@ -45,13 +54,13 @@ def layout():
                         html.A(
                             "Log out",
                             href="/logout",
-                            className="hover-underline text-white mr-4",
+                            className="hover-underline mr-4",
                         ),
                     ],
                     style={"float": "right"},
                 ),
             ],
-            className="w-full flex flex-col sm:flex-row sm:justify-between sm:!items-center",
+            className="w-full flex flex-col sm:flex-row sm:justify-between sm:!items-center py-8 px-4 bg-teal-700 shadow-md border-b border-gray-300 text-white",
         ),
     ]
 
