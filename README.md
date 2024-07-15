@@ -1,3 +1,4 @@
+
 # Plotly Dash Template
 This is a template for a dash app with postgres database. It borrows some ideas from other web frameworks, including migration patterns, service providers, directory structure, auth, styling and more to make it easier to get started with dash as a multi page web app. Over the coming weeks/months this template will be updated with more features and improvements in order to make it as modular and flexible to use as possible.
 
@@ -7,14 +8,23 @@ This is a template for a dash app with postgres database. It borrows some ideas 
 - Activate the virtual environment: `source venv/bin/activate`
 - Install the requirements: `pip install -r requirements.txt`
 - Copy the `.env.example` file to `.env` and fill in the necessary details
-- Ensure you have a postgres database running and migrate the database
+- Ensure you have a postgres database running and to migrate the database
 - Set up the npm packages for tailwind: `npm install` and `npm run build` or `npm run watch`
 - Run the application: `python app.py`
 
 ### Migrations
-- To add migrations: `python manage.py make_migration "create_users_table"`
-- To upgrade migrations use flask: `flask db upgrade`
-- To drop/migrate fresh: `python manage.py migrate_fresh`
+- To add migration files: `python manage.py migrate:make create_users_table"
+- To apply migrations: `python manage.py migrate:upgrade`
+- To drop tables and migrate fresh: `python manage.py migrate:fresh`
+
+### Models
+Each model is defined in its own file in the `app/models` directory. This is to keep the models separate and modular. The `db.Model` class is used to define the base model for all models.
+- To create a new model, run `python manage.py model:create User users`
+- This will create a new model file in the `app/models` directory
+
+### Jobs
+Jobs can be defined in the `app/jobs` directory. Any `.py` file in the `jobs` directory will be callable as a job.
+- Job files should have a `run` function that is called when the job is run
 
 ### Styling
 - Tailwind is used for styling. To set up for compiling css run `npm install` in the root directory
