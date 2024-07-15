@@ -26,14 +26,14 @@ def migrate__fresh(ctx):
     subprocess.run(["flask", "db", "upgrade"])
 
 
-def migrate__upgrade(ctx, revision="head"):
+def migrate__upgrade(ctx):
     """Upgrade the database to a given revision."""
-    subprocess.run(["flask", "db", "upgrade", revision])
+    subprocess.run(["flask", "db", "upgrade"])
 
 
-def migrate__downgrade(ctx, revision):
+def migrate__downgrade(ctx):
     """Downgrade the database to a given revision."""
-    subprocess.run(["flask", "db", "downgrade", revision])
+    subprocess.run(["flask", "db", "downgrade"])
 
 
 def migrate__merge(ctx, branch_1, branch_2, message):
