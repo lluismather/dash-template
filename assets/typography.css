@@ -33,3 +33,15 @@
     src: url("LOTA ALT 3/LotaGrotesqueAlt3-Thin.otf") format("opentype");
     font-weight: 200;
 }
+
+._dash-loading {
+    display: none;
+}
+
+.column-header-name {
+    padding-left: 0.5rem !important;
+}
+
+.cell-markdown > p {
+    margin: 0 !important;
+}

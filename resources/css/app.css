@@ -5,7 +5,7 @@
 @layer base {
     
     body {
-        @apply font-sans text-base min-h-screen;
+        @apply min-h-screen font-sans text-base;
     }
 
     a {
@@ -14,6 +14,47 @@
 
     p {
         @apply m-0;
+    }
+
+    table {
+        @apply !w-full !font-sans;
+    }
+
+    th {
+        @apply !font-semibold !text-left !py-2 !px-4;
+    }
+
+    tbody {
+        @apply !text-sm;
+    }
+
+    tr:nth-child(even) {
+        @apply !bg-gray-100;
+    }
+
+    td {
+        @apply !py-2 !px-4;
+    }
+
+    .breadcrumb {
+        @apply !text-sm !text-white !flex !flex-wrap !gap-2;
+    }
+
+    nav > ol > li:not(:last-child)::after {
+        @apply !inline-block !ml-4 !mr-2 !text-white !align-middle;
+        content: ">";
+    }
+
+    li:not(:last-child) > a {
+        @apply hover:underline;
+    }
+
+    li:last-child > a {
+        @apply !font-semibold underline;
+    }
+
+    input.DateInput_input {
+        @apply !border-none;
     }
 
 }
