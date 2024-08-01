@@ -2,6 +2,9 @@
 from flask import redirect, session, url_for
 from flask_dance.contrib.azure import azure, make_azure_blueprint
 from config import constants
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Email
 
 
 def get_auth_blueprint():
@@ -77,3 +80,16 @@ def find_or_create_user(token):
         login_user(user)
 
     return False
+
+
+def login_form():
+    class LoginForm(FlaskForm):
+        email = StringField("Email", validators=[DataRequired(), Email()])
+        password = PasswordField("Password", validators=[DataRequired()])
+        submit = SubmitField("Submit")
+    return LoginForm()
+
+
+def user_loader(user_id):
+    from app.models.users import User
+    return User.query.get(user_id)

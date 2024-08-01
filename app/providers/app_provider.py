@@ -6,15 +6,22 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
 from config import constants
-from app.providers.auth_provider import get_auth_blueprint, setup_login_routes
+from app.providers.auth_provider import get_auth_blueprint, setup_login_routes, user_loader
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
 
 # app
 app = flask.Flask(__name__)
-Talisman(app, content_security_policy=None)
+app.template_folder = "../../resources/templates"
 app.config.update(PREFERRED_URL_SCHEME="https")
 app.secret_key = constants.APP_SECRET_KEY
 app.config["SESSION_TYPE"] = "filesystem"
+app.config["SQLALCHEMY_DATABASE_URI"] = constants.DATABASE_URL
+
+# security
+Talisman(app, content_security_policy=None)
+CSRFProtect(app)
+
 
 # database
 app.config["SQLALCHEMY_DATABASE_URI"] = constants.DATABASE_URL
@@ -30,6 +37,7 @@ setup_login_routes(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "azure.login"
+login_manager.user_loader(user_loader)
 
 # app base path
 app_path = os.path.dirname(os.path.abspath(__file__)).replace("/app/providers", "")

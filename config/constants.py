@@ -1,7 +1,17 @@
 
-from config.app import *
-from config.auth import *
-from config.database import *
+from config.app import APP_ENV, APP_SECRET_KEY, APP_DEBUG, APP_HOST, APP_PORT, APP_URL
+from config.auth import AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID
+from config.database import DATABASE_URL
 
 class Config:
-    pass
+    APP_ENV = APP_ENV
+    APP_SECRET_KEY = APP_SECRET_KEY
+    APP_DEBUG = APP_DEBUG
+    APP_HOST = APP_HOST
+    APP_PORT = APP_PORT
+    APP_URL = APP_URL
+    AZURE_CLIENT_ID = AZURE_CLIENT_ID
+    AZURE_CLIENT_SECRET = AZURE_CLIENT_SECRET
+    AZURE_TENANT_ID = AZURE_TENANT_ID
+    DATABASE_URL = DATABASE_URL
+
