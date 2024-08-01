@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/app.css" type="text/css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="" type="image/x-icon">
+    <style>
+      
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      input[type="submit"] {
+        margin-top: 2rem;
+        padding: 0.75rem !important;
+        background-color: #000;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem !important;
+      }
+
+      input {
+        margin-top: 0.5rem;
+        padding: 0.25rem !important;
+        border: 1px solid #ccc;
+      }
+
+      label {
+        margin-top: 0.5rem !important;
+        font-size: 0.9rem;
+      }
+
+    </style>
+    <title>Login</title>
+  </head>
+
+  <body class="flex items-center justify-center w-full h-screen bg-gray-200">
+    
+    {% if form %}
+
+      <div id="form" class="flex flex-col w-full max-w-lg p-8 bg-white rounded-lg">
+        
+        <img src="#" alt="logo" class="w-24 h-24 mx-auto mb-8">
+        <a href="{{ azure_url }}">
+          <button class="w-full px-4 py-[0.75rem] mb-4 text-[0.9rem] text-white bg-teal-500">Log in with O365</button>
+        </a>
+
+        <div class="flex flex-row items-center justify-center w-full py-2">
+          <hr class="w-12 text-black">
+          <p class="px-2 text-sm">or</p>
+          <hr class="w-12 text-black">
+        </div>
+
+        {% if errors %}
+          <div class="relative px-4 py-2 my-4 text-sm text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline">{{ errors[0] }}</span>
+          </div>
+        {% endif %}
+
+        <form method="POST" action="/login">
+          {{ form.csrf_token }}
+          {{ form.email.label }} {{ form.email }}
+          {{ form.password.label }} {{ form.password }}
+          {{ form.login }}
+          <input type="submit" value="Log in">
+        </form>
+
+      </div>
+
+    {% endif %}
+
+  </body>
+
+</html>

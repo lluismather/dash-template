@@ -1,5 +1,6 @@
 
-from flask import redirect, session, url_for
+from flask import redirect, session, url_for, render_template
+import flask
 from flask_dance.contrib.azure import azure, make_azure_blueprint
 from config import constants
 from flask_wtf import FlaskForm
@@ -20,6 +21,10 @@ def get_auth_blueprint():
 
 def login_required(func):
     def check_authorization(*args, **kwargs):
+        path = flask.request.path
+        excluded_paths = constants.AUTH_EXCLUDED_PATHS
+        if path in excluded_paths:
+            return func(*args, **kwargs)
         if not azure.authorized or azure.token.get("expires_in") < 0:
             return redirect(url_for("azure.login"))
         else:
@@ -29,6 +34,32 @@ def login_required(func):
 
 
 def setup_login_routes(app):
+    @app.route("/login", methods=["GET", "POST"])
+    def login():
+        from app.models.users import User
+        from flask_login import login_user
+
+        if azure.authorized:
+            return redirect(url_for("azure_callback"))
+
+        if flask.request.method == 'GET':
+            return render_template(
+                "login.html",
+                form=login_form(),
+            )
+
+        email = flask.request.form['email']
+        users = User.query.all()
+        if email in [u.email for u in users] and flask.request.form['password'] == users[email]['password']:
+            user = User()
+            login_user(user)
+            return flask.redirect(flask.url_for('protected'))
+
+        return render_template(
+            "login.html",
+            form=login_form(),
+            errors=["Invalid email or password"],
+        )
     
     @app.route("/azure/callback")
     def azure_callback():

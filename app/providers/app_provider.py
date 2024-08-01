@@ -22,7 +22,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = constants.DATABASE_URL
 Talisman(app, content_security_policy=None)
 CSRFProtect(app)
 
-
 # database
 app.config["SQLALCHEMY_DATABASE_URI"] = constants.DATABASE_URL
 db = SQLAlchemy(app)
