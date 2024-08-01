@@ -3,6 +3,7 @@ import subprocess
 from datetime import datetime
 from sqlalchemy import text
 from database.connections import db
+from database.seeders.app_seeder import AppSeeder
 
 
 def migrate__make(ctx, message):
@@ -24,6 +25,14 @@ def migrate__fresh(ctx):
         conn.execute(text(f"DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO public;"))
 
     subprocess.run(["flask", "db", "upgrade"])
+
+
+
+def migrate__seed(ctx):
+    """Seed the database with initial data."""
+    seeder = AppSeeder()
+    seeder.run()
+
 
 
 def migrate__upgrade(ctx):
